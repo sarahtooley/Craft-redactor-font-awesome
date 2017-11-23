@@ -9,15 +9,67 @@
 	cursor: pointer;
 	border: 1px dashed transparent;
 }
-	.iconContents div.active{
-		border: 1px dashed #bbb;
-	}
-	.iconContents div i{
-		font-size: 22px;
-		color: #444;
-	}
-	.iconContents div span{
-		font-size: 14px;
-		color: #999;
-		margin-left: 5px;
-	}
+
+.iconContents div.active{
+	border: 1px dashed #bbb;
+}
+
+.iconContents div i{
+	font-size: 22px;
+	color: #444;
+}
+
+.iconContents div span{
+	font-size: 14px;
+	color: #999;
+	margin-left: 5px;
+}
+
+/* ==================================================================================== PLUGIN CUSTOMIZATION === */
+.iconContents {
+	height: 500px;
+	overflow: auto;
+	margin: 20px 0;
+	border: 1px solid lightgrey;
+}
+
+.colourContents{
+	display: flex;
+}
+
+#sampleColour {
+	font-size:40px;
+	padding-right:5px;
+}
+
+.light-color {
+	color: #ececec;
+}
+
+.white-color {
+	color: #fff;
+}
+
+.aqua-color {
+	color: #66ceff;
+}
+
+.teal-color {
+	color: #63edc9;
+}
+
+.dark-blue-color {
+	color: #0070a3;
+}
+
+.light-blue-color {
+	color: #9de9ff;
+}
+
+.red-color {
+	color: #cf2043;
+}
+
+.orange-color {
+	color: #ff7466;
+}
