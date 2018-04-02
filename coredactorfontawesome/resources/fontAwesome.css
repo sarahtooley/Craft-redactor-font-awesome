@@ -1,6 +1,7 @@
-@import '//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css';
+/*@import '//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css';*/
+@import '//use.fontawesome.com/releases/v5.0.9/css/all.css';
 
-.iconContents div{
+.iconContents div {
 	width: 25%;
 	display: inline-block;
 	vertical-align: top;
@@ -10,19 +11,18 @@
 	border: 1px dashed transparent;
 }
 
-.iconContents div.active{
+.iconContents div.active {
 	border: 1px dashed #bbb;
 }
 
-.iconContents div i{
+.iconContents div i {
 	font-size: 22px;
 	color: #444;
 }
 
-.iconContents div span{
+.iconContents div span {
 	font-size: 14px;
 	color: #999;
-	margin-left: 5px;
 }
 
 /* ==================================================================================== PLUGIN CUSTOMIZATION === */
@@ -33,13 +33,13 @@
 	border: 1px solid lightgrey;
 }
 
-.colourContents{
+.colourContents {
 	display: flex;
 }
 
 #sampleColour {
-	font-size:40px;
-	padding-right:5px;
+	font-size: 40px;
+	padding-right: 5px;
 }
 
 .light-color {
