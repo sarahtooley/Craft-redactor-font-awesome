@@ -5,7 +5,7 @@
 	width: 25%;
 	display: inline-block;
 	vertical-align: top;
-	padding: 25px;
+	padding: 10px 10px 20px 10px;
 	box-sizing: border-box;
 	cursor: pointer;
 	border: 1px dashed transparent;
@@ -15,8 +15,8 @@
 	border: 1px dashed #bbb;
 }
 
-.iconContents div i {
-	font-size: 22px;
+.iconContents div svg {
+	font-size: 30px;
 	color: #444;
 }
 
