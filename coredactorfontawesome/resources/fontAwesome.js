@@ -7,30 +7,30 @@ RedactorPlugins.creativeorangeFontAwesome = function () {
             this.button.addCallback(button, this.creativeorangeFontAwesome.show);
             this.button.setIcon(button, '<i class="far fa-smile"</i>');
         },
-        getTemplate: function (modal, len, icons) {
+        getTemplate: function () {
             return String()
                 + '<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>\n'
                 + '<section id="redactor-modal-advanced">'
                 + '<div class="iconFilterStyle"><p>Choose a category and style or search for individual icons:</p>'
-                + '<select name="iconTheme" id="iconStyle">'
+                + '<select name="iconCategory" id="iconCategory">'
                 + '<option value="" disabled="true" selected>Choose a category...</option>'
-                + '<option value="all">All Themes</option>'
+                + '<option value="category-all">All Categories</option>'
                 + '<option value="accessibility">Accessibility</option>'
                 + '<option value="arrows">Arrows</option>'
-                + '<option value="audiovideo">Audio & Video</option>'
+                + '<option value="audio-video">Audio & Video</option>'
                 + '<option value="business">Business</option>'
                 + '<option value="charity">Charity</option>'
                 + '<option value="chat">Chat</option>'
                 + '<option value="chess">Chess</option>'
                 + '<option value="code">Code</option>'
-                + '<option value="communications">Communication</option>'
+                + '<option value="communication">Communication</option>'
                 + '<option value="computers">Computers</option>'
                 + '<option value="currency">Currency</option>'
-                + '<option value="datetime">Date & Time</option>'
+                + '<option value="date-time">Date & Time</option>'
                 + '<option value="design">Design</option>'
                 + '<option value="editors">Editors</option>'
                 + '<option value="files">Files</option>'
-                + '<option value="genders">Genders</option>'
+                + '<option value="gender">Genders</option>'
                 + '<option value="hands">Hands</option>'
                 + '<option value="health">Health</option>'
                 + '<option value="images">Images</option>'
@@ -40,22 +40,22 @@ RedactorPlugins.creativeorangeFontAwesome = function () {
                 + '<option value="medical">Medical</option>'
                 + '<option value="moving">Moving</option>'
                 + '<option value="objects">Objects</option>'
-                + '<option value="payment">Payment & Shopping</option>'
+                + '<option value="payments-shopping">Payment & Shopping</option>'
                 + '<option value="shapes">Shapes</option>'
                 + '<option value="spinners">Spinners</option>'
                 + '<option value="sports">Sports</option>'
                 + '<option value="status">Status</option>'
-                + '<option value="people">Users & People</option>'
+                + '<option value="users-people">Users & People</option>'
                 + '<option value="vehicles">Vehicles</option>'
                 + '<option value="writing">Writing</option>'
                 + '</select><br><br>'
-                + '<select name="iconTheme" id="iconStyle">'
+                + '<select name="iconStyle" id="iconStyle">'
                 + '<option value="" disabled="true" selected>Choose a style...</option>'
-                + '<option value="all">All Styles</option>'
-                + '<option value="fas">Solid</option>'
-                + '<option value="far">Regular</option>'
-                + '<option value="fal">Light</option>'
-                + '<option value="fab">Brands</option>'
+                + '<option value="style-all">All Styles</option>'
+                + '<option value="style-fas">Solid</option>'
+                + '<option value="style-far">Regular</option>'
+                + '<option value="style-fal">Light</option>'
+                + '<option value="style-fab">Brands</option>'
                 + '</select>'
                 + '</div><hr>'
                 + '<div class="iconFilterInput"><input placeholder="Search for icons" id="iconSearchBox" type="text" /></div>'
@@ -75,8 +75,7 @@ RedactorPlugins.creativeorangeFontAwesome = function () {
             var iconsXML = new XMLHttpRequest();
             var categoriesXML = new XMLHttpRequest();
 
-
-
+            categoriesXML.open("GET", "../../../assets/json/facategories.json", true);
             categoriesXML.onload = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     categories = JSON.parse(this.responseText);
@@ -85,11 +84,13 @@ RedactorPlugins.creativeorangeFontAwesome = function () {
             categoriesXML.onerror = function(e) {
                 console.log(this.statusText);
             };
+            categoriesXML.send();
 
             iconsXML.open("GET", "../../../assets/json/faicons.json", true);
             iconsXML.onload = function(e) {
                 if (this.readyState == 4 && this.status == 200) {
                     icons = JSON.parse(this.responseText);
+                    printIcons(icons);
                 }
             };
             iconsXML.onerror = function(e) {
@@ -97,61 +98,67 @@ RedactorPlugins.creativeorangeFontAwesome = function () {
             };
             iconsXML.send();
 
-
-            categoriesXML.open("GET", "../../../assets/json/facategories.json", true);
-            categoriesXML.send();
-
-            this.modal.addTemplate('creativeorangeFontAwesome', this.creativeorangeFontAwesome.getTemplate(icons.length, icons));
+            this.modal.addTemplate('creativeorangeFontAwesome', this.creativeorangeFontAwesome.getTemplate());
             this.modal.load('creativeorangeFontAwesome', 'Font awesome icons', 800);
-            // this.modal.createCancelButton();
 
-            var blkstr = [];
+            var iconOptions = [];
+            var iconsLength = 0;
 
-            icons.forEach(function(icon) {
-                var iconCategory = '';
-                var iconStyle = '';
-                console.log(icon);
+            function printIcons(icons) {
+                iconsLength = icons.length;
+                for (var icon in icons) {
+                    if (icons.hasOwnProperty(icon)){
+                        var iconCategories = '';
+                        var iconName = icon;
+                        var iconLabel = icons[icon].label;
 
-                //Get the icon category.
-                for (var i = 0; i < categories; i++) {
-                    var category = categories[i];
-                    for (var i = 0; i < category[0]; i++) {
-                        var compareIcon = category[0][i];
-                        if (icon === compareIcon) {
-                            iconCategory = categories[i];
+                        //Get the icon categories.
+                        for (var category in categories) {
+                            if (categories.hasOwnProperty(category)) {
+                                for (var i = 0; i < categories[category].icons.length; i++) {
+                                    if (icon === categories[category].icons[i]) {
+                                        iconCategories += category + " ";
+                                    }
+                                }
+                            }
                         }
-                    }
-                }
 
-                //Get the icon styles.
-                for (var i = 0; i < icon.styles; i++) {
-                    var style = icon.styles[i]
-                    if (style === "brand") {
-                        iconStyle = 'fab';
-                    } else if (style === "solid") {
-                        iconStyle = 'fas';
-                    } else if (style === "regular") {
-                        iconStyle = 'far';
-                    } else if (style === "light") {
-                        iconStyle = 'fal';
-                    }
-                }
-                // var listcons = $('<i class="' + icon + '" id="redactor-fa-' + icon + '"><span>' + icon + '</span></i>');
-                blkstr.push('<div><i class="' + iconCategory + iconStyle + ' fa-' + icon + '" id="redactor-fa-' + icon + '"></i><br><span>' + icon.label + '</span></div>');
+                        //Get the icon styles.
+                        for (var style in icons[icon].styles) {
+                            if (icons[icon].styles.hasOwnProperty(style)) {
+                                if (icons[icon].styles[style] === "brands") {
+                                    createIcon(iconCategories, "fab", iconName, (iconLabel));
+                                } else if (icons[icon].styles[style] === "solid") {
+                                    createIcon(iconCategories, "fas", iconName, (iconLabel));
+                                } else if (icons[icon].styles[style] === "regular") {
+                                    createIcon(iconCategories, "far", iconName, (iconLabel));
+                                } else if (icons[icon].styles[style] === "light") {
+                                    createIcon(iconCategories, "fal", iconName, (iconLabel));
+                                }
+                            }
+                        }
+                    };
+                };
 
-            });
-            // for (var i = 0; i < icons.length; i++) {
-            //
-            // }
+                //Print the icons.
+                $(".iconContents").html(iconOptions.join(""));
 
-            $(".iconContents").html(blkstr.join(""));
+                //Control icon selections.
+                $(".iconContents div").on('click', function () {
+                    $(".iconContents div").removeClass('active');
+                    $(this).addClass('active');
+                });
+            }
 
-            $(".iconContents div").on('click', function () {
-                $(".iconContents div").removeClass('active');
-                $(this).addClass('active');
-            });
+            function createIcon(category, style, name, label) {
+                iconOptions.push('<div><i class="' + style + " fa-" + name + '" id="redactor-fa-' + name + '"></i>'
+                    + '<br>'
+                    + '<span class="' + category + " style-" + style + '">' + label + '</span>'
+                    + '<input type="hidden" name="final-icon" value="' + style + " fa-" + name + '"></div>');
+            }
 
-            //Load and select colours. ======================================================= PLUGIN CUSTOMIZATION ===
+
+            //Load and select colours.
             //Colours added here should match css class names under fontAwesome.css and in your public assets.
             //NOTE: In 'getTemplate,' the following string is customized:
             //          + '<div class="colourContents"><p id="sampleColour"><i class="fa fa-square"></i></p></div>'
@@ -168,7 +175,7 @@ RedactorPlugins.creativeorangeFontAwesome = function () {
             $("#selCol").change(function () {
                 $("#sampleColour").removeClass().addClass($(this).val());
             });
-            //================================================================================ END OF CUSTOMIZATION ===
+
 
             //Process user requests.
             var savebutton = this.modal.getActionButton('Insert');
@@ -177,17 +184,32 @@ RedactorPlugins.creativeorangeFontAwesome = function () {
             this.selection.save();
             this.modal.show();
 
-            // Filter icons by style
-            $('#iconStyle').change(function () {
-                var valStyle = $(this).val().toLowerCase();
-                if (valStyle === 'all') {
-                    $('.iconContents>div>i').each(function () {
+            // Filter icons by category.
+            $('#iconCategory').change(function () {
+                var valCategory = $(this).val();
+                if (valCategory === 'category-all') {
+                    $('.iconContents>div>span').each(function () {
                         $(this).parent().show();
                     });
                 } else {
-                    $('.iconContents>div>i').each(function () {
+                    $('.iconContents>div>span').each(function () {
                         var text = $(this).attr('class');
-                        (text.indexOf(valStyle) === 0) ? $(this).parent().show() : $(this).parent().hide();
+                        (text.indexOf(valCategory) >= 0) ? $(this).parent().show() : $(this).parent().hide();
+                    });
+                }
+            });
+
+            // Filter icons by style.
+            $('#iconStyle').change(function () {
+                var valStyle = $(this).val();
+                if (valStyle === 'style-all') {
+                    $('.iconContents>div>span').each(function () {
+                        $(this).parent().show();
+                    });
+                } else {
+                    $('.iconContents>div>span').each(function () {
+                        var text = $(this).attr('class');
+                        (text.indexOf(valStyle) >= 0) ? $(this).parent().show() : $(this).parent().hide();
                     });
                 }
             });
@@ -195,7 +217,7 @@ RedactorPlugins.creativeorangeFontAwesome = function () {
             // Filter icons by search
             $('#iconSearchBox').keyup(function () {
                 var valSearch = $(this).val().toLowerCase();
-                $('.iconContents>div>i').each(function () {
+                $('.iconContents>div>span').each(function () {
                     var text = $(this).text().toLowerCase();
                     (text.indexOf(valSearch) === 0) ? $(this).parent().show() : $(this).parent().hide();
                 });
@@ -203,20 +225,18 @@ RedactorPlugins.creativeorangeFontAwesome = function () {
 
         },
         insert: function () {
-            var str = $(".iconContents div.active span").text();
+            var str = $(".iconContents div.active input").val();
 
-            //Load and select colours. ======================================================= PLUGIN CUSTOMIZATION ===
+            //Load and select colours.
             var chosenCol = $("#selCol").val();
             if (chosenCol === "Default") {
                 chosenCol = '';
             }
-            //console.log(str);
 
             this.modal.close();
             this.selection.restore();
 
             var node = $('<span />').html('<i class="' + str + ' ' + chosenCol + '"></i>', false);
-            //================================================================================ END OF CUSTOMIZATION ===
 
             this.insert.node(node);
             this.code.sync();
