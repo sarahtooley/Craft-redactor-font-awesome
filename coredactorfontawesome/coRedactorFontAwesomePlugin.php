@@ -7,12 +7,12 @@ class coRedactorFontAwesomePlugin extends BasePlugin
 {
     public function getName()
     {
-        return 'Redactor Font Awesome Plugin Craft 2 (Custom)';
+        return 'Redactor Font Awesome 5 Plugin (Craft 2)';
     }
 
     public function getVersion()
     {
-        return '1.3';
+        return '2.0';
     }
 
     public function getDeveloper()

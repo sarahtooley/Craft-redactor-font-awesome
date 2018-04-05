@@ -15,7 +15,7 @@
 	border: 1px dashed #bbb;
 }
 
-.iconContents div svg {
+.iconContents div i {
 	font-size: 30px;
 	color: #444;
 }
@@ -39,6 +39,7 @@
 #sampleColour {
 	font-size: 40px;
 	padding-right: 5px;
+	margin-bottom: 0;
 }
 
 .light-color {
