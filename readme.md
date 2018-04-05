@@ -1,4 +1,4 @@
-# Craft - Redactor Font Awesome plugin - Craft 2.5
+# Craft - Redactor Font Awesome 5 Plugin - Craft 2.5
 
 ![Image of Craft Redactor Font Awesome](./coFontAwesomePreview.jpg)
 
